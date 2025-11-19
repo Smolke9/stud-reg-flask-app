@@ -10,8 +10,8 @@ logging.basicConfig(filename='flask.log', level=logging.INFO)
 # Database config for local MySQL
 db_config = {
     'host': 'localhost',
-    'user': 'flaskuser',
-    'password': 'Flaskpass123',  # 🔐 Replace if changed
+    'user': 'root',
+    'password': 'Surajmolke123',  # 🔐 Replace if changed
     'database': 'studentdb'
 }
 
