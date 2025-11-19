@@ -1,17 +1,20 @@
 from flask import Flask, render_template, request
 import mysql.connector
+import logging
 
 app = Flask(__name__)
 
-# Database configuration
+# Configure logging to file
+logging.basicConfig(filename='flask.log', level=logging.INFO)
+
+# Database config for local MySQL
 db_config = {
-    'host': 'db',
+    'host': 'localhost',
     'user': 'flaskuser',
-    'password': 'FlaskPass123"',
-    'database': 'studentsdb'
+    'password': 'Flaskpass123',  # 🔐 Replace if changed
+    'database': 'studentdb'
 }
 
-# Home page: Registration form
 @app.route('/', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -24,7 +27,6 @@ def register():
 
         conn = mysql.connector.connect(**db_config)
         cursor = conn.cursor()
-
         query = '''
         INSERT INTO students (name, email, phone, course, address, contact)
         VALUES (%s, %s, %s, %s, %s, %s)
@@ -36,8 +38,19 @@ def register():
         cursor.close()
         conn.close()
 
+        logging.info(f"Student Registered: {name}")
         return 'Student Registered Successfully!'
     return render_template('register.html')
+
+@app.route('/students')
+def students():
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM students")
+    data = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return render_template("students.html", students=data)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
