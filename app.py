@@ -6,8 +6,8 @@ app = Flask(__name__)
 # Database configuration
 db_config = {
     'host': 'db',
-    'user': 'root',
-    'password': 'Suraj@123',
+    'user': 'flaskuser',
+    'password': 'FlaskPass123"',
     'database': 'studentsdb'
 }
 
